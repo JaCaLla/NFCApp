@@ -7,7 +7,8 @@ This repository contains a sample iOS application. The app implements a simple i
 
 Check out the app in action!  
 ![CombineAPIRrest Sample App review](media/review.gif)  
-[Youtube]: (https://youtu.be/KQC92SKTqRg)
+
+[Youtube](https://youtu.be/KQC92SKTqRg)
 
 ## Requirements
 
