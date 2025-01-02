@@ -38,6 +38,26 @@ struct ContentView: View {
             .foregroundColor(.white)
             .cornerRadius(10)
             
+            Button("Write URL on NFC") {
+                Task {
+                    await nfcManager.startWritingURL()
+                }
+            }
+            .padding()
+            .background(Color.indigo)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            
+            Button("Write Deeplink on NFC") {
+                Task {
+                    await nfcManager.startWritingDeeplink()
+                }
+            }
+            .padding()
+            .background(Color.orange)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            
             Text(nfcManager.tagMessage)
                 .padding()
             

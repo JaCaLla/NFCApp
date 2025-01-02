@@ -10,9 +10,22 @@
 		2964A0512D1C2762003BA110 /* NFCApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFCApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		29BD289C2D21D09800C79C90 /* Exceptions for "NFCApp" folder in "NFCApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2964A0502D1C2762003BA110 /* NFCApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2964A0532D1C2762003BA110 /* NFCApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				29BD289C2D21D09800C79C90 /* Exceptions for "NFCApp" folder in "NFCApp" target */,
+			);
 			path = NFCApp;
 			sourceTree = "<group>";
 		};
@@ -256,6 +269,7 @@
 				DEVELOPMENT_TEAM = 7ZPDPWR8XU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NFCApp/Info.plist;
 				INFOPLIST_KEY_NFCReaderUsageDescription = "NFC tag to read/write NDEF messages into the application";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -287,6 +301,7 @@
 				DEVELOPMENT_TEAM = 7ZPDPWR8XU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NFCApp/Info.plist;
 				INFOPLIST_KEY_NFCReaderUsageDescription = "NFC tag to read/write NDEF messages into the application";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

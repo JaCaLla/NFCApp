@@ -13,6 +13,7 @@ protocol NFCManagerProtocol {
     @MainActor var tagMessage: String { get }
     func startReading() async
     func startWriting(message: String) async
+    func startWritingURL() async
 }
 
 final class NFCManager: NSObject, ObservableObject,
@@ -33,9 +34,22 @@ final class NFCManager: NSObject, ObservableObject,
         }
     }
     
+    enum NFCOperation {
+        case read
+        case write
+        case writeURL
+        case writeDeeplink
+    }
+    
+    enum NFCError: Error {
+        case badFormedURL
+    }
+
+    
     var nfcSession: NFCNDEFReaderSession?
-    var isWrite = false
+    var nfcOperation = NFCOperation.read
     private var userMessage: String?
+    
     
     @MainActor override init() {
     }
@@ -45,15 +59,28 @@ final class NFCManager: NSObject, ObservableObject,
 extension NFCManager: NFCManagerProtocol {
     
     func startReading() async {
-        self.nfcSession = NFCNDEFReaderSession(delegate: self, queue: nil, invalidateAfterFirstRead: false)
-        self.isWrite = false
-        self.nfcSession?.begin()
+        nfcOperation = .read
+        startSesstion()
     }
     
     func startWriting(message: String) async {
-        nfcSession = NFCNDEFReaderSession(delegate: self, queue: nil, invalidateAfterFirstRead: false)
-        isWrite = true
+        nfcOperation = .write
         userMessage = message
+        startSesstion()
+    }
+    
+    func startWritingURL() async {
+        nfcOperation = .writeURL
+        startSesstion()
+    }
+    
+    func startWritingDeeplink() async {
+        nfcOperation = .writeDeeplink
+        startSesstion()
+    }
+    
+    private func startSesstion() {
+        nfcSession = NFCNDEFReaderSession(delegate: self, queue: nil, invalidateAfterFirstRead: false)
         nfcSession?.begin()
     }
 }
@@ -86,10 +113,15 @@ extension NFCManager:  NFCNDEFReaderSessionDelegate {
                 case  .readOnly:
                     session.invalidate(errorMessage: "Tag is read-only")
                 case .readWrite:
-                    if self.isWrite {
-                        self.write(session: session, tag: tag)
-                    } else {
+                    switch self.nfcOperation {
+                    case .read:
                         self.read(session: session, tag: tag)
+                    case .write:
+                        self.write(session: session, tag: tag)
+                    case .writeURL:
+                        self.writeUrl(session: session, tag: tag, urlString: "https://javios.eu/portfolio/")
+                    case .writeDeeplink:
+                        self.writeUrl(session: session, tag: tag, urlString: "nfcreader://jca.nfcreader.open")
                     }
                     
                 @unknown default:
@@ -129,17 +161,42 @@ extension NFCManager:  NFCNDEFReaderSessionDelegate {
             identifier: Data(),
             payload: userMessage.data(using: .utf8)!
         )
-        let message = NFCNDEFMessage(records: [payload])
-        tag.writeNDEF(message) { error in
+        write(session, tag, payload) { error in
+            guard  error == nil else { return }
+            print(">>> Write: \(userMessage)")
+        }
+    }
+    
+    private func writeUrl(session: NFCNDEFReaderSession, tag: NFCNDEFTag, urlString: String) {
+        guard let url = URL(string: urlString),
+            let payload = NFCNDEFPayload.wellKnownTypeURIPayload(string: url.absoluteString) else {
+            session.invalidate(errorMessage: "No se pudo crear el payload NDEF.")
+            return
+        }
+
+        write(session, tag, payload) { error in
+            guard  error == nil else { return }
+            print(">>> Write: \(url.absoluteString)")
+        }
+    }
+    
+    private func write(_ session: NFCNDEFReaderSession,
+                       _ tag: NFCNDEFTag,
+                       _ nfcNdefPayload: NFCNDEFPayload, completion: @escaping ((Error?) -> Void)) {
+        
+        let NDEFMessage = NFCNDEFMessage(records: [nfcNdefPayload])
+        tag.writeNDEF(NDEFMessage) { error in
             if let error = error {
                 session.invalidate(errorMessage: "Writing error: \(error.localizedDescription)")
+                completion(error)
             } else {
-                print(">>> Write: \(userMessage)")
                 session.alertMessage = "Writing succeeded"
                 session.invalidate()
+                completion(nil)
             }
         }
     }
+    
     
     func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {}
     
