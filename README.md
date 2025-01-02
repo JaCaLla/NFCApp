@@ -7,18 +7,15 @@ This repository contains a sample iOS application. The app implements a simple i
 
 Check out the app in action!  
 ![CombineAPIRrest Sample App review](media/review.gif)  
-
-![Store a web link into NFC tag](media/NFC_Web1.gif)  
-![Store an app deeplink into NFC tag](media/NFC_Deeplink.gif)  
-
-
 [Youtube](https://youtu.be/KQC92SKTqRg)
 
-
+Store a web link into NFC tag
+![Store a web link into NFC tag](media/NFC_Web1.gif)  
 [Youtube](https://youtu.be/T7no6VQmMas)
+
+Store an app deeplink into NFC tag
+![Store an app deeplink into NFC tag](media/NFC_Deeplink.gif)
 [Youtube](https://youtu.be/hs2WM2gIMGU)
-
-
 
 ## Requirements
 
