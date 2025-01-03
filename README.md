@@ -1,5 +1,5 @@
 
-# CombineAPIRrest
+# NFCApp
 This repository contains a sample iOS application. The app implements a simple iOS app that reads and writes sample NDEF data on an NFC tag. This is the base code used in following posts [Harnessing NFC Technology in your iOS App](https://javios.eu/swift/harnessing-nfc-technology-in-your-ios-app/) and  [iOS NFC Development: From URLs to Deeplinks](https://javios.eu/swift/harnessing-nfc-technology-in-your-ios-app/) 
 
 
